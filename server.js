@@ -42,6 +42,7 @@ app.post("/saveTexts", async (req, res) => {
 
     // Save the multiline string as a single document
     await collection.insertOne({ text: multilineString });
+    
     console.log("Text Saved Successfully");
     res.status(200).send("Texts saved successfully");
   } catch (error) {
