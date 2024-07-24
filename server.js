@@ -28,8 +28,8 @@ async function connectToDatabase() {
 }
 app.post("/saveTexts", async (req, res) => {
   try {
-    const texts = req.body.texts;
-    if (!Array.isArray(texts)) {
+    const { id, texts } = req.body;
+    if (!id || !Array.isArray(texts)) {
       return res.status(400).send("Invalid data format");
     }
 
@@ -40,9 +40,8 @@ app.post("/saveTexts", async (req, res) => {
     // Join array elements into a single multiline string
     const multilineString = texts.join("\n");
 
-    // Save the multiline string as a single document
-    await collection.insertOne({ text: multilineString });
-    
+    // Save the multiline string with an ID
+    await collection.insertOne({ id, text: multilineString });
     console.log("Text Saved Successfully");
     res.status(200).send("Texts saved successfully");
   } catch (error) {
