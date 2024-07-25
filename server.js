@@ -28,7 +28,7 @@ async function connectToDatabase() {
 }
 app.post("/saveTexts", async (req, res) => {
   try {
-    const { id, texts } = req.body;
+    const { id, texts, startTime, endTime } = req.body;
     if (!id || !Array.isArray(texts)) {
       return res.status(400).send("Invalid data format");
     }
@@ -39,7 +39,12 @@ app.post("/saveTexts", async (req, res) => {
 
     const multilineString = texts.join("\n");
 
-    await collection.insertOne({ id, text: multilineString });
+    await collection.insertOne({
+      id,
+      startTime,
+      endTime,
+      text: multilineString,
+    });
     console.log("Text Saved Successfully");
     res.status(200).send("Texts saved successfully");
   } catch (error) {
